@@ -284,27 +284,37 @@ public class PopulateText : MonoBehaviour
 {
     public TMP_Text helperText;
     //holotask sample code
-    HoloTask testTask = new HoloTask("Test", 2);
+    //HoloTask testTask = new HoloTask("Test", 2);
+    HoloTask samplePrintSetup = new HoloTask("Print Setup", 3);
     void Start()
     {
-        //holotask sample code
-        testTask.SetStepObjective(1, 4);
-        testTask.SetStepObjective(2, 3);
-        testTask.Begin();
-        System.Random r = new System.Random();
-        while (!testTask.IsComplete())
-        {
-            int rInt = r.Next(0, 5);
-            bool b = testTask.Check(rInt);
-            helperText.text = rInt + " = " + b;
-            
-        }
+        samplePrintSetup.SetStepName(1, "Preheat the bed to 65 degrees");
+        samplePrintSetup.SetStepObjective(1, 65);
+        samplePrintSetup.SetStepName(2, "Set the nozzle temperature to 210 degrees");
+        samplePrintSetup.SetStepObjective(2, 210);
+        samplePrintSetup.SetStepName(3, "Start the print");
+        samplePrintSetup.SetStepObjective(3, "PRINTING");
 
-        helperText.text = "done";
-        
     }
     void Update()
     {
-        
+        //check if we're done yet
+        if (samplePrintSetup.IsComplete())
+        {
+            helperText.text = "All done!";
+            return;
+        }
+        //update the helper text with the current step name
+        int currStep = samplePrintSetup.GetCurrentStepNumber();
+        helperText.text = samplePrintSetup.GetStepName(currStep);
+        /*
+        probably put code to do the actual printer referencing and seeing the status of whatever we're looking for
+        based on the step number here? and then we can check for completion and this will check on the
+        printer again and again each frame until it's done basically and continue making sure
+        the helper text is set to whatever it's supposed to be set to
+        */
+        //check on completion
+        samplePrintSetup.Check(currStep);
+
     }
 }

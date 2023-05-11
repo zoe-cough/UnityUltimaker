@@ -298,15 +298,16 @@ public class PopulateText : MonoBehaviour
     }
     void Update()
     {
+        int currStep = samplePrintSetup.GetCurrentStepNumber();
         //check if we're done yet
         if (samplePrintSetup.IsComplete())
         {
             helperText.text = "All done!";
             return;
+        } else {
+            helperText.text = samplePrintSetup.GetStepName(currStep);
         }
-        //update the helper text with the current step name
-        int currStep = samplePrintSetup.GetCurrentStepNumber();
-        helperText.text = samplePrintSetup.GetStepName(currStep);
+        //update the helper text with the current step name        
         /*
         probably put code to do the actual printer referencing and seeing the status of whatever we're looking for
         based on the step number here? and then we can check for completion and this will check on the
@@ -314,7 +315,18 @@ public class PopulateText : MonoBehaviour
         the helper text is set to whatever it's supposed to be set to
         */
         //check on completion
-        samplePrintSetup.Check(currStep);
+        switch(currStep) {
+            case 1:
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/bed/temperature"));
+                break;
+            case 2:
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/nozzle/temperature"));
+                break;
+            case 3:
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/status"));
+                break;
+        }
+        
 
     }
 }

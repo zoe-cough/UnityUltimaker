@@ -317,13 +317,13 @@ public class PopulateText : MonoBehaviour
         //check on completion
         switch(currStep) {
             case 1:
-                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/bed/temperature"));
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/bed/temperature"));
                 break;
             case 2:
-                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/nozzle/temperature"));
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/heads/0/extruders/0/hotend/temperature"));
                 break;
             case 3:
-                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/print/status"));
+                samplePrintSetup.Check(GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/status"));
                 break;
         }
         

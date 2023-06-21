@@ -289,11 +289,11 @@ public class PopulateText : MonoBehaviour
     void Start()
     {
         samplePrintSetup.SetStepName(1, "Preheat the bed to 65 degrees");
-        samplePrintSetup.SetStepObjective(1, 65);
+        samplePrintSetup.SetStepObjective(1, "65.0");
         samplePrintSetup.SetStepName(2, "Set the nozzle temperature to 210 degrees");
-        samplePrintSetup.SetStepObjective(2, 210);
+        samplePrintSetup.SetStepObjective(2, "210.0");
         samplePrintSetup.SetStepName(3, "Start the print");
-        samplePrintSetup.SetStepObjective(3, "PRINTING");
+        samplePrintSetup.SetStepObjective(3, "printing");
 
     }
     void Update()
@@ -305,6 +305,10 @@ public class PopulateText : MonoBehaviour
             helperText.text = "All done!";
             return;
         } else {
+            if(currStep == 0)
+            {
+                samplePrintSetup.Begin();
+            }
             helperText.text = samplePrintSetup.GetStepName(currStep);
         }
         //update the helper text with the current step name        
@@ -317,13 +321,15 @@ public class PopulateText : MonoBehaviour
         //check on completion
         switch(currStep) {
             case 1:
-                samplePrintSetup.Check(samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/bed/temperature"));
+                String s = samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/bed/temperature").Split("target\": ")[1].Replace("}", "");
+                samplePrintSetup.Check(s);
                 break;
             case 2:
-                samplePrintSetup.Check(samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/heads/0/extruders/0/hotend/temperature"));
+                String s2 = samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/heads/0/extruders/0/hotend/temperature").Split("target\": ")[1].Replace("}", ""); ;
+                samplePrintSetup.Check(s2);
                 break;
             case 3:
-                samplePrintSetup.Check(samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/status"));
+                samplePrintSetup.Check(samplePrintSetup.GetSynchronusURLGoal("http://10.204.140.12/api/v1/printer/status").Replace("\"", ""));
                 break;
         }
         
